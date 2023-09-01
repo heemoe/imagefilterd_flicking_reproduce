@@ -36,6 +36,17 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   void handleNavigate() {
     // nav to second
+
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => const SecondScreen(),
+        transitionDuration: const Duration(seconds: 0),
+      ),
+    );
+  }
+
+  void handleNavigateAnimated() {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return const SecondScreen();
     }));
@@ -51,93 +62,34 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           children: [
-            const Text("blur network image"),
-            _buildBlurNetworkImage(handleNavigate),
+            ElevatedButton(
+              onPressed: handleNavigate,
+              child: const Text("navigate without animation"),
+            ),
+            ElevatedButton(
+              onPressed: handleNavigateAnimated,
+              child: const Text("navigate with animation"),
+            ),
             const SizedBox(
               height: 40,
             ),
-            const Text("blur local image"),
-            _buildBlurLocalImage(handleNavigate),
-            const SizedBox(
-              height: 40,
-            ),
-            const Text("pure image"),
-            _buildPureImage(handleNavigate),
-            const SizedBox(
-              height: 40,
-            ),
-            const Text("backdropped"),
-            _buildBackdropped(handleNavigate),
+            _buildImageFiltered(),
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
-  _buildBlurNetworkImage(VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: ImageFiltered(
-        imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Image.network(
-          // random
-          "https://picsum.photos/200/300",
-          fit: BoxFit.cover,
-          width: 100,
-          height: 100,
-        ),
-      ),
-    );
-  }
-
-  _buildBlurLocalImage(VoidCallback onTap) {
+  _buildImageFiltered() {
     return ClipRect(
-      child: GestureDetector(
-        onTap: onTap,
-        child: ImageFiltered(
-          imageFilter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
-          child: Image.asset(
-            "assets/img.png",
-            // not work
-            height: 100,
-            width: 100,
-          ),
+      child: ImageFiltered(
+        imageFilter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
+        child: Image.asset(
+          "assets/img.png",
+          // not work
+          height: 100,
+          width: 100,
         ),
-      ),
-    );
-  }
-
-  _buildPureImage(VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Image.asset(
-        "assets/img.png",
-        height: 100,
-        width: 100,
-      ),
-    );
-  }
-
-  _buildBackdropped(VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Stack(
-        children: [
-          Image.asset(
-            "assets/img.png",
-            height: 100,
-            width: 100,
-          ),
-          ClipRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: const SizedBox(
-                height: 100,
-                width: 100,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
