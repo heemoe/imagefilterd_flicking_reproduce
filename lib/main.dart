@@ -73,19 +73,23 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(
               height: 40,
             ),
-            _buildImageFiltered(),
+            _buildImageFiltered("assets/img.png"),
+            const SizedBox(
+              height: 40,
+            ),
+            _buildImageFiltered("assets/img_1.png"),
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
-  _buildImageFiltered() {
+  _buildImageFiltered(String path) {
     return ClipRect(
       child: ImageFiltered(
         imageFilter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
         child: Image.asset(
-          "assets/img.png",
+          path,
           // not work
           height: 100,
           width: 100,
