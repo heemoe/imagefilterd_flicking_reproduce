@@ -51,11 +51,23 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           children: [
+            const Text("blur network image"),
             _buildBlurNetworkImage(handleNavigate),
             const SizedBox(
-              height: 100,
+              height: 40,
             ),
-            _buildBlurLocalImage(handleNavigate)
+            const Text("blur local image"),
+            _buildBlurLocalImage(handleNavigate),
+            const SizedBox(
+              height: 40,
+            ),
+            const Text("pure image"),
+            _buildPureImage(handleNavigate),
+            const SizedBox(
+              height: 40,
+            ),
+            const Text("backdropped"),
+            _buildBackdropped(handleNavigate),
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
@@ -91,6 +103,41 @@ class _MyHomePageState extends State<MyHomePage> {
             width: 100,
           ),
         ),
+      ),
+    );
+  }
+
+  _buildPureImage(VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Image.asset(
+        "assets/img.png",
+        height: 100,
+        width: 100,
+      ),
+    );
+  }
+
+  _buildBackdropped(VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Stack(
+        children: [
+          Image.asset(
+            "assets/img.png",
+            height: 100,
+            width: 100,
+          ),
+          ClipRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: const SizedBox(
+                height: 100,
+                width: 100,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
