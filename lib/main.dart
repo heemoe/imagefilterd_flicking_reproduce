@@ -34,6 +34,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  void handleNavigate() {
+    // nav to second
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return const SecondScreen();
+    }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,27 +48,47 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: _buildBlurImage(() {
-        // nav to second
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return const SecondScreen();
-        }));
-      }), // This trailing comma makes auto-formatting nicer for build methods.
+      body: Center(
+        child: Column(
+          children: [
+            _buildBlurNetworkImage(handleNavigate),
+            const SizedBox(
+              height: 100,
+            ),
+            _buildBlurLocalImage(handleNavigate)
+          ],
+        ),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
-  _buildBlurImage(VoidCallback onTap) {
-    return Center(
+  _buildBlurNetworkImage(VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: ImageFiltered(
+        imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Image.network(
+          // random
+          "https://picsum.photos/200/300",
+          fit: BoxFit.cover,
+          width: 100,
+          height: 100,
+        ),
+      ),
+    );
+  }
+
+  _buildBlurLocalImage(VoidCallback onTap) {
+    return ClipRect(
       child: GestureDetector(
         onTap: onTap,
         child: ImageFiltered(
-          imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Image.network(
-            // random
-            "https://picsum.photos/200/300",
-            fit: BoxFit.cover,
-            width: 100,
+          imageFilter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
+          child: Image.asset(
+            "assets/img.png",
+            // not work
             height: 100,
+            width: 100,
           ),
         ),
       ),
